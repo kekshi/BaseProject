@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.core.view.GravityCompat
 import com.google.android.material.navigation.NavigationView
+import com.gyf.barlibrary.ImmersionBar
 import com.kekshi.baselib.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_layout.*
@@ -17,6 +18,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
         toolbar.setNavigationIcon(R.drawable.ic_navigation_menu)
         toolbar.setNavigationOnClickListener { drawer.openDrawer(GravityCompat.START) }
+
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
@@ -35,5 +37,10 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         item.isChecked = true
         drawer.closeDrawers()
         return true
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        ImmersionBar.with(this).destroy()
     }
 }
