@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:id="@+id/main"
+           android:checkableBehavior="single">
+        <item android:id="@+id/xm1"
+              android:title="项目1"
+              android:icon="@mipmap/ic_launcher"/>
+        <item android:id="@+id/xm2"
+              android:title="项目2"
+              android:icon="@mipmap/ic_launcher"/>
+        <item android:id="@+id/xm3"
+              android:title="项目3"
+              android:icon="@mipmap/ic_launcher"/>
+    </group>
+    <group android:id="@+id/misc"
+           android:checkableBehavior="single">
+        <item android:id="@+id/dez1"
+              android:checkable="false"
+              android:title="第二组1"
+              android:icon="@mipmap/ic_launcher"/>
+        <item android:id="@+id/dez2"
+              android:title="第二组2"
+              android:icon="@mipmap/ic_launcher"/>
+    </group>
+</menu>
