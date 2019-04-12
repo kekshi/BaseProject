@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">BaseLib</string>
+
+    <string name="authority_refuse">有的权限被拒绝了</string>
+    <string name="authority_setting_refuse">权限被拒绝了,请打开应用权限</string>
+    <string name="setting">设置</string>
+    <string name="cancel">取消</string>
+    <string name="confirm">确定</string>
 </resources>

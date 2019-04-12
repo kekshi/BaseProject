@@ -142,4 +142,14 @@ object SPUtils{
         }
         return retData
     }
+
+    fun remove(key: String) {
+        val sp = mContext!!.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE)
+        sp.edit().remove(key).apply()
+    }
+
+    fun clearAll() {
+        val sp = mContext!!.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE)
+        sp.edit().clear().apply()
+    }
 }
