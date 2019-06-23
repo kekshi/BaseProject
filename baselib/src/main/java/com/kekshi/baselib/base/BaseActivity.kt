@@ -98,16 +98,21 @@ open class BaseActivity : AppCompatActivity() {
     }
 
     fun showAlertDialog(title: String, msg: String, confirm: () -> Unit) {
+        showAlertDialog(title, msg, confirm, null)
+    }
+
+    fun showAlertDialog(title: String, msg: String, confirm: () -> Unit, cancel: (() -> Unit)?) {
         val dialog = AlertDialog.Builder(this)
             .setTitle(title)
             .setMessage(msg)
             .setPositiveButton("确定") { _, _ ->
-                confirm()
+                confirm.invoke()
             }
-            .setNegativeButton("取消", null)
+            .setNegativeButton("取消") { _, _ ->
+                cancel?.invoke()
+            }
             .create()
         dialog.show()
-
     }
 
     /**

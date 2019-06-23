@@ -26,6 +26,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         toolbar.setNavigationIcon(R.drawable.ic_navigation_menu)
         toolbar.setNavigationOnClickListener { drawer.openDrawer(GravityCompat.START) }
 
+        refreshPermissionStatus()
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
@@ -52,6 +53,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
     private fun refreshPermissionStatus() {
+        //一定要记得在 AndroidManifest 中注册权限
         handlePermissions(arrayOf(Manifest.permission.READ_PHONE_STATE), object : PermissionListener {
             override fun onGranted() {
                 //权限同意后的逻辑
@@ -60,29 +62,33 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             @RequiresApi(Build.VERSION_CODES.M)
             override fun onDenied(deniedPermissions: List<String>) {
                 //权限拒绝后的逻辑
-
-
-                refreshPermissionStatus()
-
-                var allNeverAskAgain = true
-                for (deniedPermission in deniedPermissions) {
-                    //权限都被拒绝，且被标记为不再提示
-                    if (shouldShowRequestPermissionRationale(deniedPermission)) {
-                        allNeverAskAgain = false
-                        break
-                    }
-                }
-                if (allNeverAskAgain) {
-                    showToast(R.string.authority_setting_refuse)
-                    val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                    val uri = Uri.fromParts("package", BaseApp.context.packageName, null)
-                    intent.data = uri
-                    startActivityForResult(intent, 1)
-                }
+                showAlertDialog("请求权限", "权限被拒绝将导致某些功能无法正常使用", {
+                    hintPermissions(deniedPermissions)
+                })
             }
         })
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun hintPermissions(deniedPermissions: List<String>) {
+        var allNeverAskAgain = true
+        for (deniedPermission in deniedPermissions) {
+            //权限都被拒绝，且被标记为不再提示
+            if (shouldShowRequestPermissionRationale(deniedPermission)) {
+                allNeverAskAgain = false
+                break
+            }
+        }
+        if (allNeverAskAgain) {
+            showToast(R.string.authority_setting_refuse)
+            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+            val uri = Uri.fromParts("package", BaseApp.context.packageName, null)
+            intent.data = uri
+            startActivityForResult(intent, 1)
+        } else {
+            refreshPermissionStatus()
+        }
+    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when (requestCode) {
