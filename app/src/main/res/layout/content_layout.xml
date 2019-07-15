@@ -2,22 +2,22 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:app="http://schemas.android.com/apk/res-auto"
               android:orientation="vertical"
+              android:fitsSystemWindows="true"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
-    <com.kekshi.baselib.view.ToolbarView
-            android:id="@+id/toolbar"
+    <androidx.viewpager.widget.ViewPager
+            android:id="@+id/mViewPager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/mBottomNavigationView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fitsSystemWindows="true"
-            android:background="@color/colorPrimary"
-            app:title="@string/app_name"
-            android:elevation="4dp"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            android:touchscreenBlocksFocus="false"/>
-
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Hello World!"/>
+            android:background="@color/white"
+            app:itemTextColor="@drawable/txt_home_bottom_nav_selector"
+            app:labelVisibilityMode="labeled"
+            app:menu="@menu/menu_home_bottom_nav"/>
 </LinearLayout>

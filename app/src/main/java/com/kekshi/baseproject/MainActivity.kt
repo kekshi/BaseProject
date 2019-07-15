@@ -6,30 +6,65 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
 import android.view.MenuItem
 import androidx.annotation.RequiresApi
-import androidx.core.view.GravityCompat
+import androidx.fragment.app.Fragment
+import androidx.viewpager.widget.ViewPager
 import com.google.android.material.navigation.NavigationView
 import com.gyf.barlibrary.ImmersionBar
 import com.kekshi.baselib.base.BaseActivity
 import com.kekshi.baselib.base.BaseApp
-import com.kekshi.baselib.utils.FileUtils
-import com.kekshi.baselib.utils.MD5Utils
+import com.kekshi.baseproject.fragment.FourFragment
+import com.kekshi.baseproject.fragment.OneFragment
+import com.kekshi.baseproject.fragment.ThreeFragment
+import com.kekshi.baseproject.fragment.TwoFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_layout.*
-import java.io.File
-import java.util.*
 
-class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener, ViewPager.OnPageChangeListener {
+
+    lateinit var fragmentList: ArrayList<Fragment>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         navigation.setNavigationItemSelectedListener(this)
-        refreshPermissionStatus()
-        toolbar.setNavigationIcon(R.drawable.ic_navigation_menu)
-        toolbar.setNavigationOnClickListener { drawer.openDrawer(GravityCompat.START) }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            refreshPermissionStatus()
+        }
+
+        fragmentList = arrayListOf()
+        fragmentList.add(OneFragment())
+        fragmentList.add(TwoFragment())
+        fragmentList.add(ThreeFragment())
+        fragmentList.add(FourFragment())
+        mViewPager.adapter = PageAdapter(supportFragmentManager, fragmentList)
+        mViewPager.addOnPageChangeListener(this)
+
+        // 不使用图标默认变色
+        mBottomNavigationView.itemIconTintList = null
+        mBottomNavigationView.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.menu_home -> {
+                    mViewPager.setCurrentItem(0, false)
+                    return@setOnNavigationItemSelectedListener true
+                }
+                R.id.home_found -> {
+                    mViewPager.setCurrentItem(1, false)
+                    return@setOnNavigationItemSelectedListener true
+                }
+                R.id.home_message -> {
+                    mViewPager.setCurrentItem(2, false)
+                    return@setOnNavigationItemSelectedListener true
+                }
+                R.id.home_me -> {
+                    mViewPager.setCurrentItem(3, false)
+                    return@setOnNavigationItemSelectedListener true
+                }
+            }
+            return@setOnNavigationItemSelectedListener false
+        }
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
@@ -38,22 +73,6 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             R.id.xm2 -> showToast(item.title.toString())
             R.id.xm3 -> {
                 showToast(item.title.toString())
-                val fileStr = "${FileUtils.getRootPath().absoluteFile}${File.separator}${FileUtils.DEVICES_FILE_NAME}"
-                var file = File(fileStr)
-                if (!file.exists()) {
-                    file.createNewFile()
-                    Log.e("MainActivitiKt", "file:" + file.absolutePath)
-                    FileUtils.saveFileUTF8(file.absolutePath, "123456")
-                }
-                val utF8 = FileUtils.getFileUTF8(fileStr)
-                Log.e("MainActivitiKt", "isSDCardEnable:" + FileUtils.isSDCardEnable())
-                Log.e("MainActivitiKt", "sdCardIsAvailable:" + FileUtils.sdCardIsAvailable())
-                Log.e("MainActivitiKt", "getRootPath:" + FileUtils.getRootPath().absolutePath)
-                Log.e("MainActivitiKt", "getFileUTF8:" + utF8)
-                val result = UUID.randomUUID().toString().replace("-", "") + android.os.Build.SERIAL
-                Log.e("MainActivitiKt", "result:" + result)
-                val md5 = MD5Utils.md5(result)
-                Log.e("MainActivitiKt", "md5:" + md5)
             }
             R.id.dez1 -> {
                 showToast(item.title.toString())
@@ -66,6 +85,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         return true
     }
 
+
     override fun onDestroy() {
         super.onDestroy()
         ImmersionBar.with(this).destroy()
@@ -73,23 +93,23 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
     private fun refreshPermissionStatus() {
         handlePermissions(
-            arrayOf(
-                Manifest.permission.READ_PHONE_STATE,
-                Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
-            ), object : PermissionListener {
-                override fun onGranted() {
-                    //权限同意后的逻辑
-                }
+                arrayOf(
+                        Manifest.permission.READ_PHONE_STATE,
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ), object : PermissionListener {
+            override fun onGranted() {
+                //权限同意后的逻辑
+            }
 
-                @RequiresApi(Build.VERSION_CODES.M)
-                override fun onDenied(deniedPermissions: List<String>) {
-                    //权限拒绝后的逻辑
-                    showAlertDialog("请求权限", "权限被拒绝将导致某些功能无法正常使用", {
-                        hintPermissions(deniedPermissions)
-                    })
-                }
-            })
+            @RequiresApi(Build.VERSION_CODES.M)
+            override fun onDenied(deniedPermissions: List<String>) {
+                //权限拒绝后的逻辑
+                showAlertDialog("请求权限", "权限被拒绝将导致某些功能无法正常使用", {
+                    hintPermissions(deniedPermissions)
+                })
+            }
+        })
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -119,5 +139,29 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             else -> {
             }
         }
+    }
+
+    override fun onPageScrollStateChanged(state: Int) {
+    }
+
+    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+    }
+
+    override fun onPageSelected(position: Int) {
+        when (position) {
+            0 -> {
+                mBottomNavigationView.selectedItemId = R.id.menu_home
+            }
+            1 -> {
+                mBottomNavigationView.selectedItemId = R.id.home_found
+            }
+            2 -> {
+                mBottomNavigationView.selectedItemId = R.id.home_message
+            }
+            3 -> {
+                mBottomNavigationView.selectedItemId = R.id.home_me
+            }
+        }
+
     }
 }
