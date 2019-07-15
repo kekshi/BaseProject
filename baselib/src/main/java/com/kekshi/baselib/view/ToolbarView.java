@@ -3,6 +3,7 @@ package com.kekshi.baselib.view;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -156,7 +157,13 @@ public class ToolbarView extends Toolbar {
     public void setNavigationIcon(@Nullable Drawable icon) {
         super.setNavigationIcon(icon);
         setGravityCenter();
-        setNavigationOnClickListener(v -> ((Activity)getContext()).finish());
+//        setNavigationOnClickListener(v -> ((Activity)getContext()).finish());
+        Context context = getContext();
+        if (context instanceof Activity) {
+            setNavigationOnClickListener(v -> ((Activity) getContext()).finish());
+        } else if (context instanceof ContextWrapper) {
+            setNavigationOnClickListener(v -> ((Activity) ((ContextWrapper) context).getBaseContext()).finish());
+        }
     }
 
     public void setGravityCenter() {
