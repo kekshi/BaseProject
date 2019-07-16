@@ -47,6 +47,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         mBottomNavigationView.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.menu_home -> {
+                    //不使用滑动动画
                     mViewPager.setCurrentItem(0, false)
                     return@setOnNavigationItemSelectedListener true
                 }
