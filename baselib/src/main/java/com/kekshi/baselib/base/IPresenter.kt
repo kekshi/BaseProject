@@ -6,9 +6,9 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.OnLifecycleEvent
 import org.jetbrains.annotations.NotNull
 
-interface IPresenter<VIEW : IView>: LifecycleObserver {
+interface IPresenter<V : IView>: LifecycleObserver {
 
-    fun initView(view: IView)
+    fun initView(view: V)
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun onCreate(@NotNull owner: LifecycleOwner)

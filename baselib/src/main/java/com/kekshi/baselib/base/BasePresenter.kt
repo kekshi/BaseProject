@@ -5,13 +5,13 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import io.reactivex.disposables.CompositeDisposable
 
-abstract class BasePresenter<VIEW : IView> : IPresenter<VIEW> {
+abstract class BasePresenter<V : IView> : IPresenter<V> {
 
     val compositeDisposable: CompositeDisposable = CompositeDisposable()
 
-    lateinit var view: IView
+    lateinit var view: V
 
-    override fun initView(view: IView) {
+    override fun initView(view: V) {
         this.view = view
     }
 

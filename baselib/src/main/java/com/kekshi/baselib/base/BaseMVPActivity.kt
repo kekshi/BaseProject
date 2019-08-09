@@ -2,18 +2,18 @@ package com.kekshi.baselib.base
 
 import android.os.Bundle
 
-abstract class BaseMVPActivity<VIEW : IView, PRESENTER : BasePresenter<VIEW>> : BaseActivity(), IView {
+abstract class BaseMVPActivity<V : IView, P : BasePresenter<V>> : BaseActivity(), IView {
 
-    lateinit var presenter: PRESENTER
+    lateinit var presenter: P
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         lifecycle.addObserver(onCreatorPresenter())
         presenter = onCreatorPresenter()
-        presenter.initView(this)
+        presenter.initView(this as V)
     }
 
-    abstract fun onCreatorPresenter(): PRESENTER
+    abstract fun onCreatorPresenter(): P
 
     override fun onDestroy() {
         super.onDestroy()
