@@ -43,7 +43,7 @@ dependencies {
     //RecyclerView框架
     api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.40'
     //图片加载框架
-    implementation 'com.github.bumptech.glide:glide:4.8.0'
+    api 'com.github.bumptech.glide:glide:4.8.0'
     //圆形imageView
     api 'de.hdodenhof:circleimageview:2.2.0'
     //retrofit2

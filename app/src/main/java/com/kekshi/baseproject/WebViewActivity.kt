@@ -31,7 +31,7 @@ class WebViewActivity : BaseActivity() {
 
             override fun onPageFinished(view: WebView?, url: String?) {
                 super.onPageFinished(view, url)
-                toolbar.title = webView.title
+//                toolbar.title = webView.title
                 pbLoad.visibility = View.GONE
             }
         }

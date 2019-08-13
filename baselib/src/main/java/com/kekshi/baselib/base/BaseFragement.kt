@@ -1,6 +1,8 @@
 package com.kekshi.baselib.base
 
 import android.os.Bundle
+import android.widget.Toast
+import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 
 
@@ -45,5 +47,13 @@ abstract class BaseFragement : Fragment() {
             isDataInitiated = true
             lazyLoad()
         }
+    }
+
+    fun showToast(msg: String) {
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+    }
+
+    fun showToast(@StringRes msg: Int) {
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
     }
 }

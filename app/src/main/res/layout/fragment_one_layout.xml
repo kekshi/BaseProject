@@ -1,13 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
 
     <TextView
-        android:id="@+id/tvContent"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="第一个页面" />
+            android:id="@+id/tvContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="第一个页面"/>
+
+    <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:paddingTop="15dp"
+            android:paddingBottom="10dp">
+
+        <com.kekshi.baselib.view.SwipeCaptcha
+                android:id="@+id/swipeCaptchaView"
+                android:layout_width="200dp"
+                android:layout_height="100dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/douyu"
+                app:captchaHeight="40dp"
+                app:captchaWidth="40dp"/>
+
+        <SeekBar
+                android:id="@+id/dragBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:progressDrawable="@drawable/dragbg"
+                android:splitTrack="false"
+                android:thumb="@drawable/thumb_bg"
+                android:thumbOffset="0dip"/>
+
+        <Button
+                android:id="@+id/btnChange"
+                android:layout_width="230dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="重置"/>
+
+    </LinearLayout>
 
 </LinearLayout>
