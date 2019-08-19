@@ -6,7 +6,7 @@ import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 
 
-abstract class BaseFragement : Fragment() {
+abstract class BaseFragment : Fragment() {
 
     /**
      * View有没有加载过

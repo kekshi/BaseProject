@@ -5,12 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
-import com.kekshi.baselib.base.BaseFragement
+import com.kekshi.baselib.base.BaseFragment
 import com.kekshi.baselib.view.SwipeCaptcha
 import kotlinx.android.synthetic.main.fragment_one_layout.*
 
 
-class OneFragment : BaseFragement() {
+class OneFragment : BaseFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(com.kekshi.baseproject.R.layout.fragment_one_layout, container, false)

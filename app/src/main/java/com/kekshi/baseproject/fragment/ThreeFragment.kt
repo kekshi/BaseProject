@@ -4,10 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.kekshi.baselib.base.BaseFragement
+import com.kekshi.baselib.base.BaseFragment
 import com.kekshi.baseproject.R
 
-class ThreeFragment : BaseFragement() {
+class ThreeFragment : BaseFragment() {
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
