@@ -1,5 +1,6 @@
 package com.kekshi.baselib.base
 
+import android.content.Context
 import android.os.Bundle
 import android.widget.Toast
 import androidx.annotation.StringRes
@@ -20,6 +21,13 @@ abstract class BaseFragment : Fragment() {
      * 是不是加载过
      */
     protected var isDataInitiated: Boolean = false
+
+    protected lateinit var mContext: Context
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        mContext = context
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

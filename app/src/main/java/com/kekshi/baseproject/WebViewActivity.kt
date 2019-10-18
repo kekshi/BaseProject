@@ -46,11 +46,11 @@ class WebViewActivity : BaseActivity() {
             // 是否支持缩放
             setSupportZoom(true)
             // 存储(storage)
-            domStorageEnabled = true
+//            domStorageEnabled = true
             // 设置出现缩放工具
-            //builtInZoomControls = true;
+            builtInZoomControls = true;
             //扩大比例的缩放
-            //useWideViewPort = true;
+            useWideViewPort = true
             //自适应屏幕
             layoutAlgorithm = WebSettings.LayoutAlgorithm.NORMAL
             // 当页面宽度大于WebView宽度时，缩小使页面宽度等于WebView宽度
