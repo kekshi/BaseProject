@@ -8,7 +8,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
@@ -127,12 +126,6 @@ public class CircleProgressBarView extends View {
         centerX = widthSize / 2;
         centerY = heightSize / 2;
         radius = Math.min(widthSize, heightSize) / 2 - Math.max(circleBgStrokeWidth, progressStrokeWidth);
-        Log.d("dddddd", " widthSize() is :" + MeasureSpec.getSize(widthMeasureSpec));
-        Log.d("dddddd", " heightSize() is :" + MeasureSpec.getSize(heightMeasureSpec));
-        Log.d("dddddd", " getMeasuredWidth() is :" + getMeasuredWidth());
-        Log.d("dddddd", " getMeasuredHeight() is :" + getMeasuredHeight());
-        Log.d("dddddd", " resolveSizeWidth() is :" + widthSize);
-        Log.d("dddddd", " resolveSizeHeight() is :" + heightSize);
 
         rectF.set(centerX - radius,
                 centerY - radius,

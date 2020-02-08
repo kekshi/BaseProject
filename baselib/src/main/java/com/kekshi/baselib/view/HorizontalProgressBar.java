@@ -10,7 +10,6 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
@@ -294,7 +293,6 @@ public class HorizontalProgressBar extends View {
             if (progressListener != null) {
                 progressListener.currentProgressListener(value);
             }
-            Log.d("ddddd", "progress is :" + value);
             setCurrentProgress(value);
         });
         progressAnimator.start();

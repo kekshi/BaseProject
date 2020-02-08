@@ -48,7 +48,7 @@ class WebViewActivity : BaseActivity() {
             // 存储(storage)
 //            domStorageEnabled = true
             // 设置出现缩放工具
-            builtInZoomControls = true;
+            builtInZoomControls = true
             //扩大比例的缩放
             useWideViewPort = true
             //自适应屏幕
@@ -71,9 +71,11 @@ class WebViewActivity : BaseActivity() {
         private const val TITLE = "title"
         private const val URL = "url"
 
-        fun toActivity(context: Context, title: String, url: String) {
+        fun toActivity(context: Context, title: String? = null, url: String) {
             val intent = Intent(context, WebViewActivity::class.java).apply {
-                putExtra(TITLE, title)
+                title?.let {
+                    putExtra(TITLE, it)
+                }
                 putExtra(URL, url)
             }
             context.startActivity(intent)

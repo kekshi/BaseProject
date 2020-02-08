@@ -3,6 +3,7 @@ package com.kekshi.baseproject.activity.custom_view_example_activity
 import android.os.Bundle
 import android.util.Log
 import com.kekshi.baselib.base.BaseActivity
+import com.kekshi.baselib.view.ProductProgressBar
 import com.kekshi.baseproject.R
 import kotlinx.android.synthetic.main.activity_progress_bar.*
 
@@ -20,5 +21,11 @@ class ProgressBarActivity : BaseActivity() {
         horizontalProgressBar.setProgressWithAnimation(60f).setProgressListener {
 
         }
+        productProgressBar.setProgress(50f)
+            .setProgressListener(object : ProductProgressBar.ProgressListener {
+                override fun currentProgressListener(currentProgress: Float) {
+                    Log.e("ddddd", "currentProgressListener: $currentProgress")
+                }
+            })
     }
 }
