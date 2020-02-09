@@ -16,9 +16,9 @@ class HoverItemActivity : AppCompatActivity() {
 
     private lateinit var adapter: HoverAdapter
 
-    private var userBeans: List<UserBean> = ArrayList()
+    private var userBeans: MutableList<UserBean> = ArrayList()
 
-    private val names = arrayOf("阿妹", "打黑牛", "张三", "李四", "王五", "田鸡", "孙五")
+    private val names = mutableListOf<String>("阿妹", "打黑牛", "张三", "李四", "王五", "田鸡", "孙五")
 
     /**
      * 汉字转换成拼音的类
@@ -81,7 +81,7 @@ class HoverItemActivity : AppCompatActivity() {
         return -1
     }
 
-    private fun getData(): List<UserBean> {
+    private fun getData(): MutableList<UserBean> {
         val userBeans = ArrayList<UserBean>()
         for (i in 0..49) {
             val userBean = UserBean()
@@ -91,7 +91,7 @@ class HoverItemActivity : AppCompatActivity() {
         return userBeans
     }
 
-    private fun filledData(sortList: List<UserBean>): List<UserBean> {
+    private fun filledData(sortList: MutableList<UserBean>): MutableList<UserBean> {
         for (i in sortList.indices) {
             if ("" == sortList[i].userName) {
                 sortList[i].sortLetters = "#"
