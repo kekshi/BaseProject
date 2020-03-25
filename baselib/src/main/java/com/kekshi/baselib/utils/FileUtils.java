@@ -182,4 +182,12 @@ public class FileUtils {
             }
         }
     }
+
+    /**
+     * 获取文件名称分割符
+     * windows:反斜杠\	linux:正斜杠/
+     */
+    public static String getFileSeparator() {
+        return File.separator;
+    }
 }

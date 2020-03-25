@@ -5,6 +5,8 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
+import android.graphics.Matrix
+import android.media.ExifInterface
 import android.net.Uri
 import android.os.Environment
 import android.provider.MediaStore
@@ -238,5 +240,47 @@ object ImageUtils {
             isSave = false
         }
         return isSave
+    }
+
+    /**
+     * 读取照片exif信息中的旋转角度
+     *
+     * @param path
+     * 照片路径
+     * @return角度
+     */
+
+    fun readPictureDegree(path: String): Int {
+        var degree = 0
+        try {
+            val exifInterface = ExifInterface(path)
+            val orientation = exifInterface.getAttributeInt(
+                ExifInterface.TAG_ORIENTATION,
+                ExifInterface.ORIENTATION_NORMAL
+            )
+            when (orientation) {
+                ExifInterface.ORIENTATION_ROTATE_90 -> degree = 90
+                ExifInterface.ORIENTATION_ROTATE_180 -> degree = 180
+                ExifInterface.ORIENTATION_ROTATE_270 -> degree = 270
+            }
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+        return degree
+    }
+
+    /**
+     * 图片旋转
+     *
+     * @param tmpBitmap
+     * @param degrees
+     * @return
+     */
+
+    fun rotateToDegrees(tmpBitmap: Bitmap, degrees: Float): Bitmap {
+        val matrix = Matrix()
+        matrix.reset()
+        matrix.setRotate(degrees)
+        return Bitmap.createBitmap(tmpBitmap, 0, 0, tmpBitmap.width, tmpBitmap.height, matrix, true)
     }
 }

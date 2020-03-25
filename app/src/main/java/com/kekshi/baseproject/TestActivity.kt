@@ -13,11 +13,16 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.provider.Settings
+import android.util.Log
 import android.widget.DatePicker
 import androidx.core.content.FileProvider
 import com.kekshi.baselib.base.BaseActivity
+import com.kekshi.baselib.utils.FileUtils
 import com.kekshi.baselib.utils.ImageUtils
 import com.kekshi.baselib.utils.PermissionUtils
+import com.kekshi.baseproject.adapter.RvAdapter
+import com.kekshi.baseproject.widget.CustomLayoutManager
+import com.kekshi.baseproject.widget.TestItemDecoration
 import com.tbruyelle.rxpermissions2.RxPermissions
 import kotlinx.android.synthetic.main.activity_test.*
 import java.io.File
@@ -36,11 +41,13 @@ class TestActivity : BaseActivity() {
     val REQUEST_CODE_PHOTO_DOWN = 2
     val REQUEST_CODE_PERMISSIONS = 3
     var currentState = 0
+    lateinit var mAdapter: RvAdapter
+    private val mDatas = ArrayList<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_test)
-
+        initRv()
         btnDate.setOnClickListener {
             showDate()
         }
@@ -54,6 +61,54 @@ class TestActivity : BaseActivity() {
         }
     }
 
+    private fun initRv() {
+        recycler_view.layoutManager = CustomLayoutManager()
+//        recycler_view.layoutManager = LinearLayoutManager(this)
+        recycler_view.addItemDecoration(TestItemDecoration(R.color.colorPrimary))
+//        mAdapter = RvAdapter(getData(15), this)
+        mAdapter = RvAdapter(getData(15), this)
+        recycler_view.adapter = mAdapter
+
+//        val headerAndFooterWrapper = HeaderAndFooterWrapper(mAdapter)
+//        val footView = layoutInflater.inflate(R.layout.adapter_foot_item_test, recycler_view, false)
+//        headerAndFooterWrapper.addFootView(footView)
+//
+//        val loadMoreWrapper = LoadMoreWrapper(headerAndFooterWrapper)
+//        loadMoreWrapper.setLoadMoreView(R.layout.adapter_load_more_item_test)
+//        loadMoreWrapper.setOnLoadMoreListener {
+//            Log.d("ddddd", "加载更多")
+//            Handler().postDelayed({
+//                for (i in 0..9) {
+//                    mDatas.add("Add:$i")
+//                }
+//                loadMoreWrapper.notifyDataSetChanged()
+//            }, 3000)
+
+//            loadMoreWrapper.notifyDataSetChanged()
+//        }
+//        recycler_view.adapter = loadMoreWrapper
+//        recycler_view.addOnScrollListener(object : MyScrollerListener() {
+//            override fun onLoadMore(state: String?) {
+//                Log.d("ddddd", "加载更多，state is $state")
+//                loadData()
+//            }
+//        })
+    }
+
+    private fun loadData() {
+//        val oldPosition = mAdapter.getDatas().size
+//        mAdapter.getDatas().toMutableList().addAll(getData(8))
+//        mAdapter.notifyItemRangeInserted(oldPosition, mAdapter.getDatas().size)
+//        mAdapter.notifyItemChanged()
+    }
+
+    private fun getData(number: Int): MutableList<String> {
+        for (item in 0..number) {
+            mDatas.add("item-")
+        }
+        return mDatas
+    }
+
     private fun toPicture(requestCode: Int) {
         currentState = requestCode
         if (!PermissionUtils.isOverMarshmallow()) {
@@ -64,12 +119,21 @@ class TestActivity : BaseActivity() {
     }
 
     fun getSystemPhone(index: Int) {
-        outputImage = File(
-            Environment.getExternalStorageDirectory(),
-            "id_$index.jpg"
-        )
+        if (FileUtils.isSDCardEnable()) {
+            outputImage = File(
+                "${getExternalFilesDir(Environment.DIRECTORY_PICTURES)}",
+                "id_$index.jpg"
+            )
+        } else {
+            outputImage = File(
+                "${filesDir}${FileUtils.getFileSeparator()}images",
+                "id_$index.jpg"
+            )
+        }
+
+        Log.d("ddddd", "outputImage is :${outputImage.absolutePath}")
         try {
-            if (outputImage.exists()) {
+            if (FileUtils.isFileExists(outputImage)) {
                 outputImage.delete()
             }
             outputImage.createNewFile()
@@ -86,6 +150,7 @@ class TestActivity : BaseActivity() {
         } else {
             imageUri = Uri.fromFile(outputImage)
         }
+        Log.d("ddddd", "imageUri is :${imageUri.toString()}")
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
         startActivityForResult(intent, index)
@@ -97,11 +162,19 @@ class TestActivity : BaseActivity() {
             when (requestCode) {
                 REQUEST_CODE_PHOTO_UP -> {
                     picFront = outputImage
-                    setPhoneImage(imageUri!!)?.let { ivOne.setImageBitmap(it) }
+                    setPhoneImage(imageUri!!)?.let {
+                        val pictureDegree = ImageUtils.readPictureDegree(imageUri!!.path)
+                        Log.d("ddddd", "pictureDegree is :${pictureDegree}")
+
+                        ImageUtils.rotateToDegrees(it, pictureDegree.toFloat())
+                        ivOne.setImageBitmap(it)
+                    }
                 }
                 REQUEST_CODE_PHOTO_DOWN -> {
                     picBack = outputImage
-                    setPhoneImage(imageUri!!)?.let { ivTwo.setImageBitmap(it) }
+                    setPhoneImage(imageUri!!)?.let {
+                        ivTwo.setImageBitmap(it)
+                    }
 
                 }
                 REQUEST_CODE_PERMISSIONS -> requestPermission()
