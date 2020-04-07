@@ -3,35 +3,26 @@ package com.kekshi.baselib.base
 import android.app.Activity
 import android.app.ProgressDialog
 import android.content.Context
-import android.content.pm.PackageManager
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import com.elvishew.xlog.XLog
 import com.gyf.barlibrary.ImmersionBar
 import com.kekshi.baselib.R
 import com.kekshi.baselib.utils.ActivityCollector
 import java.lang.ref.WeakReference
-import java.util.*
 
 open class BaseActivity : AppCompatActivity() {
     private var weakRefActivity: WeakReference<Activity>? = null
-    private var mListener: PermissionListener? = null
     private var progressDialog: ProgressDialog? = null
 
-    interface PermissionListener {
-
-        fun onGranted()
-
-        fun onDenied(deniedPermissions: List<String>)
-
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -116,52 +107,13 @@ open class BaseActivity : AppCompatActivity() {
     }
 
     /**
-     * 检查和处理运行时权限，并将用户授权的结果通过PermissionListener进行回调。
-     *
-     * @param permissions
-     * 要检查和处理的运行时权限数组
-     * @param listener
-     * 用于接收授权结果的监听器
+     * 跳转到权限设置页面
      */
-    protected fun handlePermissions(permissions: Array<String>?, listener: PermissionListener) {
-        if (permissions == null) {
-            return
-        }
-        mListener = listener
-        val requestPermissionList = ArrayList<String>()
-        for (permission in permissions) {
-            if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
-                requestPermissionList.add(permission)
-            }
-        }
-        if (!requestPermissionList.isEmpty()) {
-            ActivityCompat.requestPermissions(this, requestPermissionList.toTypedArray(), 1)
-        } else {
-            listener.onGranted()
-        }
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when (requestCode) {
-            1 -> if (grantResults.isNotEmpty()) {
-                val deniedPermissions = ArrayList<String>()
-                for (i in grantResults.indices) {
-                    val grantResult = grantResults[i]
-                    val permission = permissions[i]
-                    if (grantResult != PackageManager.PERMISSION_GRANTED) {
-                        deniedPermissions.add(permission)
-                    }
-                }
-                if (deniedPermissions.isEmpty()) {
-                    mListener!!.onGranted()
-                } else {
-                    mListener!!.onDenied(deniedPermissions)
-                }
-            }
-            else -> {
-            }
-        }
+    fun toSettingPage(requestCode: Int) {
+        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+        val uri = Uri.fromParts("package", BaseApp.context.packageName, null)
+        intent.data = uri
+        startActivityForResult(intent, requestCode)
     }
 
     /**
@@ -179,6 +131,23 @@ open class BaseActivity : AppCompatActivity() {
             XLog.e(e.message)
         }
 
+    }
+
+    /**
+     * 不带参数的跳转
+     */
+    inline fun <reified T> toActivity(context: Context) {
+        val intent = Intent(context, T::class.java)
+        context.startActivity(intent)
+    }
+
+    /**
+     * 带参数的跳转
+     */
+    inline fun <reified T> toActivity(context: Context, block: Intent.() -> Unit) {
+        val intent = Intent(context, T::class.java)
+        intent.block()
+        context.startActivity(intent)
     }
 
     /**

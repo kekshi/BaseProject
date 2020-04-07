@@ -163,11 +163,8 @@ class TestActivity : BaseActivity() {
                 REQUEST_CODE_PHOTO_UP -> {
                     picFront = outputImage
                     setPhoneImage(imageUri!!)?.let {
-                        val pictureDegree = ImageUtils.readPictureDegree(imageUri!!.path)
-                        Log.d("ddddd", "pictureDegree is :${pictureDegree}")
-
-                        ImageUtils.rotateToDegrees(it, pictureDegree.toFloat())
-                        ivOne.setImageBitmap(it)
+                        val pictureDegree = ImageUtils.readPictureDegree(it, imageUri!!.path)
+                        ivOne.setImageBitmap(pictureDegree)
                     }
                 }
                 REQUEST_CODE_PHOTO_DOWN -> {

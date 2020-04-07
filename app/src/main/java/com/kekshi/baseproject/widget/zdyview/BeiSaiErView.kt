@@ -81,6 +81,7 @@ class BeiSaiErView @JvmOverloads constructor(
             path.rQuadTo(halfWaveLen / 2.toFloat(), -100f, halfWaveLen.toFloat(), 0f)
             path.rQuadTo(halfWaveLen / 2.toFloat(), 100f, halfWaveLen.toFloat(), 0f)
         }
+        //不把路径填充，就会只绘制高度 800f 正负 100的高度，下面都是空白的。
         path.lineTo(width.toFloat(), height.toFloat())
         path.lineTo(0f, height.toFloat())
         path.close()
@@ -88,6 +89,7 @@ class BeiSaiErView @JvmOverloads constructor(
         canvas?.drawPath(path, paint)
     }
 
+    var data = 0L
     fun startAnimator() {
         val animator = ValueAnimator.ofInt(0, mItemWaveLength)
         animator.duration = 2000

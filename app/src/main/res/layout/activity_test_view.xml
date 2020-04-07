@@ -20,13 +20,19 @@
         android:visibility="gone" />
 
     <Button
-        android:id="@+id/btn"
+        android:id="@+id/btnResetBeiSaiEr"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="reset" />
+        android:text="reset"
+        android:visibility="gone" />
 
     <com.kekshi.baseproject.widget.zdyview.BeiSaiErView
-        android:id="@+id/view"
+        android:id="@+id/beiSaiEr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+
+    <com.kekshi.baseproject.widget.zdyview.XfermodeView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 </LinearLayout>

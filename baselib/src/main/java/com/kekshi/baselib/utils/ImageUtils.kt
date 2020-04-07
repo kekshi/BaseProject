@@ -250,37 +250,33 @@ object ImageUtils {
      * @return角度
      */
 
-    fun readPictureDegree(path: String): Int {
-        var degree = 0
-        try {
-            val exifInterface = ExifInterface(path)
-            val orientation = exifInterface.getAttributeInt(
-                ExifInterface.TAG_ORIENTATION,
-                ExifInterface.ORIENTATION_NORMAL
-            )
-            when (orientation) {
-                ExifInterface.ORIENTATION_ROTATE_90 -> degree = 90
-                ExifInterface.ORIENTATION_ROTATE_180 -> degree = 180
-                ExifInterface.ORIENTATION_ROTATE_270 -> degree = 270
-            }
-        } catch (e: IOException) {
-            e.printStackTrace()
+    fun readPictureDegree(tmpBitmap: Bitmap, path: String): Bitmap {
+        val exifInterface = ExifInterface(path)
+        val orientation = exifInterface.getAttributeInt(
+            ExifInterface.TAG_ORIENTATION,
+            ExifInterface.ORIENTATION_NORMAL
+        )
+        return when (orientation) {
+            ExifInterface.ORIENTATION_ROTATE_90 -> rotateToDegrees(tmpBitmap, 90)
+            ExifInterface.ORIENTATION_ROTATE_180 -> rotateToDegrees(tmpBitmap, 180)
+            ExifInterface.ORIENTATION_ROTATE_270 -> rotateToDegrees(tmpBitmap, 270)
+            else -> tmpBitmap
         }
-        return degree
     }
 
     /**
      * 图片旋转
      *
      * @param tmpBitmap
-     * @param degrees
+     * @param degrees 旋转角度
      * @return
      */
 
-    fun rotateToDegrees(tmpBitmap: Bitmap, degrees: Float): Bitmap {
+    fun rotateToDegrees(tmpBitmap: Bitmap, degrees: Int): Bitmap {
         val matrix = Matrix()
-        matrix.reset()
-        matrix.setRotate(degrees)
-        return Bitmap.createBitmap(tmpBitmap, 0, 0, tmpBitmap.width, tmpBitmap.height, matrix, true)
+        matrix.postRotate(degrees.toFloat())
+        val rotateBitmap = Bitmap.createBitmap(tmpBitmap, 0, 0, tmpBitmap.width, tmpBitmap.height, matrix, true)
+        tmpBitmap.recycle()//将不需要的图片回收
+        return rotateBitmap
     }
 }
