@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Matrix
+import android.graphics.drawable.Drawable
 import android.media.ExifInterface
 import android.net.Uri
 import android.os.Environment
@@ -14,12 +15,23 @@ import android.util.Log
 import android.widget.ImageView
 import android.widget.ScrollView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.kekshi.baselib.base.BaseApp.Companion.context
 import java.io.*
 
 object ImageUtils {
     fun showImg(context: Context, url: String, iv: ImageView) {
         Glide.with(context).load(url).into(iv)
+    }
+
+    fun showImg(context: Context, url: Uri, iv: ImageView) {
+        Glide.with(context).load(url).skipMemoryCache(true)
+            .diskCacheStrategy(DiskCacheStrategy.NONE).into(iv)
+    }
+
+    fun showImg(context: Context, url: Uri): Drawable {
+        return Glide.with(context).load(url).skipMemoryCache(true)
+            .diskCacheStrategy(DiskCacheStrategy.NONE).submit().get()
     }
 
     /**
@@ -139,6 +151,7 @@ object ImageUtils {
         }
         // 把压缩后的数据baos存放到ByteArrayInputStream中
         val isBm = ByteArrayInputStream(baos.toByteArray())
+        image.recycle()
         // 把ByteArrayInputStream数据生成图片
         return BitmapFactory.decodeStream(isBm, null, null).apply {
             Log.d("ddddd", "质量压缩图大小是：${byteCount}")
@@ -275,7 +288,8 @@ object ImageUtils {
     fun rotateToDegrees(tmpBitmap: Bitmap, degrees: Int): Bitmap {
         val matrix = Matrix()
         matrix.postRotate(degrees.toFloat())
-        val rotateBitmap = Bitmap.createBitmap(tmpBitmap, 0, 0, tmpBitmap.width, tmpBitmap.height, matrix, true)
+        val rotateBitmap =
+            Bitmap.createBitmap(tmpBitmap, 0, 0, tmpBitmap.width, tmpBitmap.height, matrix, true)
         tmpBitmap.recycle()//将不需要的图片回收
         return rotateBitmap
     }

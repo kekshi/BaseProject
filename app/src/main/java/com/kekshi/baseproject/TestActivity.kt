@@ -172,7 +172,6 @@ class TestActivity : BaseActivity() {
                     setPhoneImage(imageUri!!)?.let {
                         ivTwo.setImageBitmap(it)
                     }
-
                 }
                 REQUEST_CODE_PERMISSIONS -> requestPermission()
             }
