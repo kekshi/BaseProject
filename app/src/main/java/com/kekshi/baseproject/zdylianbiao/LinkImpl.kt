@@ -102,6 +102,9 @@ class LinkImpl<E> : ILink<E> {
         count = 0
     }
 
+    /**
+     * 将指针重置为0
+     */
     private fun resetFoot() {
         foot = 0
     }

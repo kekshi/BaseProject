@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -23,7 +24,13 @@
         android:id="@+id/btnResetBeiSaiEr"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="reset"
+        android:text="start"
+        android:visibility="visible" />
+
+    <com.kekshi.baseproject.widget.zdyview.MyPointView
+        android:id="@+id/pointView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:visibility="gone" />
 
     <com.kekshi.baseproject.widget.zdyview.BeiSaiErView
@@ -34,5 +41,27 @@
 
     <com.kekshi.baseproject.widget.zdyview.XfermodeView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+
+    <com.kekshi.baseproject.widget.CollapsedTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:background="@android:color/white"
+        android:text="咨询按钮：点击为复制微信按钮\n
+        咨询按钮：点击为复制微信按钮\n
+        咨询按钮：点击为复制微信按钮\n
+        咨询按钮：点击为复制微信按钮\n
+        咨询按钮：点击为复制微信按钮\n
+        咨询按钮：点击为复制微信按钮\n
+        咨询按钮：点击为复制微信按钮\n
+        咨询按钮：点击为复制微信按钮\n
+        咨询按钮：点击为复制微信按钮\n
+        咨询按钮：点击为复制微信按钮\n
+咨询按钮：点击为复制微信按钮"
+        app:collapsedDrawable="@mipmap/icon_arrow_cyan_up_solid"
+        app:collapsedText="收起"
+        app:expandedDrawable="@mipmap/icon_arrow_cyan_down_solid"
+        app:expandedText="展开" />
 </LinearLayout>

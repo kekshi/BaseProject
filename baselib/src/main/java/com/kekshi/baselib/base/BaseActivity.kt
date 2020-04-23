@@ -17,9 +17,10 @@ import com.elvishew.xlog.XLog
 import com.gyf.barlibrary.ImmersionBar
 import com.kekshi.baselib.R
 import com.kekshi.baselib.utils.ActivityCollector
+import kotlinx.coroutines.*
 import java.lang.ref.WeakReference
 
-open class BaseActivity : AppCompatActivity() {
+open class BaseActivity : AppCompatActivity(), CoroutineScope by MainScope() {
     private var weakRefActivity: WeakReference<Activity>? = null
     private var progressDialog: ProgressDialog? = null
 
@@ -56,6 +57,8 @@ open class BaseActivity : AppCompatActivity() {
         if (isImmersionBarEnabled()) {
             ImmersionBar.with(this).destroy()
         }
+        //取消协程
+        cancel()
     }
 
     fun showToast(msg: String) {
@@ -136,18 +139,18 @@ open class BaseActivity : AppCompatActivity() {
     /**
      * 不带参数的跳转
      */
-    inline fun <reified T> toActivity(context: Context) {
-        val intent = Intent(context, T::class.java)
-        context.startActivity(intent)
+    inline fun <reified T> toActivity() {
+        val intent = Intent(this, T::class.java)
+        startActivity(intent)
     }
 
     /**
      * 带参数的跳转
      */
-    inline fun <reified T> toActivity(context: Context, block: Intent.() -> Unit) {
-        val intent = Intent(context, T::class.java)
+    inline fun <reified T> toActivity(block: Intent.() -> Unit) {
+        val intent = Intent(this, T::class.java)
         intent.block()
-        context.startActivity(intent)
+        startActivity(intent)
     }
 
     /**
@@ -162,6 +165,20 @@ open class BaseActivity : AppCompatActivity() {
             }
         } catch (e: Exception) {
             XLog.e(e.message)
+        }
+    }
+
+    //在man协程中执行任务
+    fun onCoroutineMain(action: () -> Unit) {
+        launch {
+            action()
+        }
+    }
+
+    //在IO协程中执行任务
+    fun onCoroutineIO(action: () -> Unit) {
+        async {
+            action()
         }
     }
 }

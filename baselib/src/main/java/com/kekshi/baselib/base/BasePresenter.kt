@@ -4,8 +4,9 @@ import android.widget.Toast
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import io.reactivex.disposables.CompositeDisposable
+import kotlinx.coroutines.*
 
-abstract class BasePresenter<V : IView> : IPresenter<V> {
+abstract class BasePresenter<V : IView> : IPresenter<V>, CoroutineScope by MainScope() {
 
     val compositeDisposable: CompositeDisposable = CompositeDisposable()
 
@@ -23,8 +24,24 @@ abstract class BasePresenter<V : IView> : IPresenter<V> {
 
     }
 
+    //在man协程中执行任务
+    protected fun onCoroutineMain(action: () -> Unit) {
+        launch {
+            action()
+        }
+    }
+
+    //在IO协程中执行任务
+    protected fun onCoroutineIO(action: () -> Unit) {
+        async {
+            action()
+        }
+    }
+
     override fun onDestroy(owner: LifecycleOwner) {
         compositeDisposable.clear()
+        //取消协程任务
+        cancel()
     }
 
     abstract fun onViewReady()
