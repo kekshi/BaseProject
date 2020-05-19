@@ -25,7 +25,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.content.ContextCompat;
 
-import com.elvishew.xlog.XLog;
 import com.kekshi.baseproject.R;
 
 import java.lang.annotation.Retention;
@@ -134,6 +133,10 @@ public class CollapsedTextView extends AppCompatTextView implements View.OnClick
     private ObjectAnimator objectAnimator;
 
     private boolean isEnabledAnimat = true;
+    /**
+     * 点击事件回调
+     */
+    private OnExpandListener mOnExpandListener;
 
     public CollapsedTextView(Context context) {
         this(context, null);
@@ -167,7 +170,7 @@ public class CollapsedTextView extends AppCompatTextView implements View.OnClick
             mTipsClickable = typed.getBoolean(R.styleable.CollapsedTextView_tipsClickable, true);
             typed.recycle();
         }
-        heights = new int[2];
+//        heights = new int[2];
     }
 
     /**
@@ -277,6 +280,9 @@ public class CollapsedTextView extends AppCompatTextView implements View.OnClick
 
     @Override
     public void setText(final CharSequence text, final BufferType type) {
+        if (getVisibility() == View.GONE) {
+            return;
+        }
         // 如果text为空或mCollapsedLines为0则直接显示
         if (TextUtils.isEmpty(text) || mCollapsedLines == 0) {
             super.setText(text, type);
@@ -304,18 +310,18 @@ public class CollapsedTextView extends AppCompatTextView implements View.OnClick
         this.isEnabledAnimat = isAnabled;
     }
 
-    @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
-        if (heights[1] == 0) {
-            if (heights[0] == 0) {//第一次是原始高度
-                heights[0] = h;
-            } else {
-                heights[1] = h;//第二次是折叠之后的高度
-            }
-        }
-        XLog.e("ddddd-heights 0:" + heights[0] + ",heights 1:" + heights[1]);
-    }
+//    @Override
+//    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+//        super.onSizeChanged(w, h, oldw, oldh);
+//        if (heights[1] == 0) {
+//            if (heights[0] == 0) {//第一次是原始高度
+//                heights[0] = h;
+//            } else {
+//                heights[1] = h;//第二次是折叠之后的高度
+//            }
+//        }
+//        XLog.e("ddddd-heights 0:" + heights[0] + ",heights 1:" + heights[1]);
+//    }
 
     /**
      * 格式化折叠时的文本
@@ -329,13 +335,17 @@ public class CollapsedTextView extends AppCompatTextView implements View.OnClick
         // 获取 layout，用于计算行数
         Layout layout = getLayout();
         // 调用 setText 用于重置 Layout
-        if (layout == null || !layout.getText().equals(mOriginalText)) {
+        if (layout == null || !TextUtils.equals(mOriginalText, layout.getText())) {
+            Log.e("ddddd", "layout.getText() is:" + layout.getText());
             super.setText(mOriginalText, type);
             layout = getLayout();
+//            return;
         }
+        Log.e("ddddd", "getLayout() is:" + layout);
         // 获取 paint，用于计算文字宽度
         TextPaint paint = getPaint();
         int line = layout.getLineCount();
+        Log.e("ddddd", "layout.getLineCount() is:" + line);
         if (line <= mCollapsedLines) {
             super.setText(mOriginalText, type);
         } else {
@@ -446,11 +456,14 @@ public class CollapsedTextView extends AppCompatTextView implements View.OnClick
             if (mTipsClickable) {
                 mIsResponseListener = false;
                 mIsExpanded = !mIsExpanded;
-                setText(mOriginalText);
 
                 if (isEnabledAnimat) {
                     startAnimat();
                 }
+                if (mOnExpandListener != null) {
+                    mOnExpandListener.onClickExpand(CollapsedTextView.this, mIsExpanded);
+                }
+                setText(mOriginalText);
             }
         }
 
@@ -471,4 +484,14 @@ public class CollapsedTextView extends AppCompatTextView implements View.OnClick
         objectAnimator.setDuration(300);
         objectAnimator.start();
     }
+
+    public void setExpandListener(OnExpandListener listener) {
+        mOnExpandListener = listener;
+    }
+
+    public interface OnExpandListener {
+        void onClickExpand(CollapsedTextView view, Boolean isExpand);
+    }
 }
+
+

@@ -14,8 +14,13 @@ import android.provider.MediaStore
 import android.util.Log
 import android.widget.ImageView
 import android.widget.ScrollView
+import androidx.annotation.DrawableRes
 import com.bumptech.glide.Glide
+import com.bumptech.glide.Priority
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.RequestOptions
+import com.kekshi.baselib.R
 import com.kekshi.baselib.base.BaseApp.Companion.context
 import java.io.*
 
@@ -32,6 +37,180 @@ object ImageUtils {
     fun showImg(context: Context, url: Uri): Drawable {
         return Glide.with(context).load(url).skipMemoryCache(true)
             .diskCacheStrategy(DiskCacheStrategy.NONE).submit().get()
+    }
+
+    //加载指定大小
+    fun loadImageViewSize(
+        mContext: Context?,
+        path: String?,
+        width: Int,
+        height: Int,
+        mImageView: ImageView?
+    ) {
+        Glide.with(mContext!!).load(path).override(width, height).into(mImageView!!)
+    }
+
+    //设置加载中以及加载失败图片
+    fun loadImageViewLoding(
+        mContext: Context?,
+        path: String?,
+        mImageView: ImageView?,
+        lodingImage: Int,
+        errorImageView: Int
+    ) {
+        Glide.with(mContext!!).load(path).placeholder(lodingImage).error(errorImageView)
+            .into(mImageView!!)
+    }
+
+    //设置加载中以及加载失败图片并且指定大小
+    fun loadImageViewLodingSize(
+        mContext: Context?,
+        path: String?,
+        width: Int,
+        height: Int,
+        mImageView: ImageView?,
+        lodingImage: Int,
+        errorImageView: Int
+    ) {
+        Glide.with(mContext!!).load(path).override(width, height).placeholder(lodingImage)
+            .error(errorImageView).into(mImageView!!)
+    }
+
+    //设置跳过内存缓存
+    fun loadImageViewCache(
+        mContext: Context?,
+        path: String?,
+        mImageView: ImageView?
+    ) {
+        Glide.with(mContext!!).load(path).skipMemoryCache(true).into(mImageView!!)
+    }
+
+    //设置下载优先级
+    fun loadImageViewPriority(
+        mContext: Context?,
+        path: String?,
+        mImageView: ImageView?
+    ) {
+        Glide.with(mContext!!).load(path).priority(Priority.NORMAL)
+            .into(mImageView!!)
+    }
+
+    /**
+     * 策略解说：
+     *
+     * all:缓存源资源和转换后的资源
+     * none:不作任何磁盘缓存
+     * source:缓存源资源
+     * result：缓存转换后的资源
+     */
+    //设置缓存策略
+    fun loadImageViewDiskCache(
+        mContext: Context?,
+        path: String?,
+        mImageView: ImageView?
+    ) {
+        Glide.with(mContext!!).load(path).diskCacheStrategy(DiskCacheStrategy.ALL)
+            .into(mImageView!!)
+    }
+
+    /**
+     * 会先加载缩略图
+     */
+    //设置缩略图支持
+    fun loadImageViewThumbnail(
+        mContext: Context?,
+        path: String?,
+        mImageView: ImageView?
+    ) {
+        Glide.with(mContext!!).load(path).thumbnail(0.1f).into(mImageView!!)
+    }
+
+    /**
+     * 加载圆角图片
+     *
+     * @param context 上下文
+     * @param view    图片控件
+     * @param url     网络图片地址
+     * @param radius  圆角度数
+     * @param errorid 错误图片
+     */
+
+    fun loadImageViewRoundedCorners(
+        context: Context,
+        view: ImageView,
+        url: String,
+        radius: Int,
+        @DrawableRes errorid: Int
+    ) {
+        //设置图片圆角角度
+        val roundedCorners = RoundedCorners(radius)
+        val options = RequestOptions.bitmapTransform(roundedCorners)
+        Glide.with(context)
+            .load(url)
+            .apply(options)
+            .placeholder(R.drawable.douyu)
+            .error(errorid)
+            .into(view);
+    }
+
+    /**
+     * 加载圆形图片
+     *
+     * @param context 上下文
+     * @param view    图片控件
+     * @param url     网络图片地址
+     * @param errorid 错误图片
+     */
+
+    fun loadImageViewCircleCorners(
+        context: Context,
+        view: ImageView,
+        url: String,
+        @DrawableRes errorid: Int
+    ) {
+        val options = RequestOptions.circleCropTransform()
+        Glide.with(context)
+            .load(url)
+            .apply(options)
+            .placeholder(R.drawable.douyu)
+            .error(errorid)
+            .into(view);
+    }
+
+    /**
+     * 加载圆形图片
+     *
+     * @param context 上下文
+     * @param view    图片控件
+     * @param url     网络图片地址
+     * @param errorid 错误图片
+     */
+
+    fun loadImageViewCircleCorners(
+        context: Context,
+        view: ImageView,
+        @DrawableRes url: Int,
+        @DrawableRes errorid: Int
+    ) {
+        val options = RequestOptions.circleCropTransform()
+        Glide.with(context)
+            .load(url)
+            .apply(options)
+            .placeholder(R.drawable.douyu)
+            .error(errorid)
+            .into(view);
+    }
+
+    //清理磁盘缓存
+    fun GuideClearDiskCache(mContext: Context?) {
+        //理磁盘缓存 需要在子线程中执行
+        Glide.get(mContext!!).clearDiskCache()
+    }
+
+    //清理内存缓存
+    fun GuideClearMemory(mContext: Context?) {
+        //清理内存缓存  可以在UI主线程中进行
+        Glide.get(mContext!!).clearMemory()
     }
 
     /**

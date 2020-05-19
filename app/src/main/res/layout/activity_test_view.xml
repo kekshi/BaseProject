@@ -25,7 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="start"
-        android:visibility="visible" />
+        android:visibility="gone" />
 
     <com.kekshi.baseproject.widget.zdyview.MyPointView
         android:id="@+id/pointView"
@@ -44,6 +44,21 @@
         android:layout_height="wrap_content"
         android:visibility="gone" />
 
+    <com.kekshi.baseproject.widget.zdyview.RedPointView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_tabs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <com.kekshi.baseproject.widget.CollapsedTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -60,8 +75,27 @@
         咨询按钮：点击为复制微信按钮\n
         咨询按钮：点击为复制微信按钮\n
 咨询按钮：点击为复制微信按钮"
+        android:visibility="gone"
         app:collapsedDrawable="@mipmap/icon_arrow_cyan_up_solid"
         app:collapsedText="收起"
         app:expandedDrawable="@mipmap/icon_arrow_cyan_down_solid"
-        app:expandedText="展开" />
+        app:expandedText="展开"
+        app:tipsColor="@color/black" />
+
+    <LinearLayout
+        android:id="@+id/ll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:orientation="horizontal" />
+
+    <com.kekshi.baseproject.widget.zdyview.DiscussionAvatarView
+        android:id="@+id/da_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:isLastComplete="false"
+        android:layout_marginTop="20dp"
+        app:maxCount="6"
+        app:radius="25dp"
+        app:space="0.5" />
 </LinearLayout>

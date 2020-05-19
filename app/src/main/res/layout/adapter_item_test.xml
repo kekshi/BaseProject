@@ -1,14 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="50dp"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="1dp"
     android:gravity="center"
-    android:background="@color/colorPrimary"
     android:orientation="vertical">
 
     <TextView
         android:id="@+id/tvContent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="1" />
+        android:text="1"
+        android:visibility="gone" />
+
+    <com.kekshi.baseproject.widget.CollapsedTextView
+        android:id="@+id/tvContent2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:background="@android:color/white"
+        android:visibility="gone"
+        app:collapsedDrawable="@mipmap/icon_arrow_cyan_up_solid"
+        app:collapsedText="收起"
+        app:expandedDrawable="@mipmap/icon_arrow_cyan_down_solid"
+        app:expandedText="展开"
+        app:tipsColor="@color/black" />
+
+    <com.kekshi.baseproject.widget.expandable.ExpandableTextView
+        android:id="@+id/tv_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:lineSpacingExtra="4dp"
+        android:padding="15dp"
+        android:textSize="12sp"
+        app:ep_collapsed_drawable="@mipmap/icon_arrow_cyan_up_solid"
+        app:ep_expand_color="@color/black"
+        app:ep_expand_drawable="@mipmap/icon_arrow_cyan_down_solid"
+        app:ep_need_contract="true"
+        app:ep_need_expand="true"
+        app:ep_need_link="false"
+        app:ep_need_mention="false" />
 </LinearLayout>
