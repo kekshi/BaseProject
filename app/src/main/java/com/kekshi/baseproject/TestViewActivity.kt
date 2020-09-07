@@ -1,5 +1,6 @@
 package com.kekshi.baseproject
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.kekshi.baselib.base.BaseActivity
 import com.kekshi.baselib.utils.DensityUtils
 import com.kekshi.baselib.utils.ImageUtils
+import com.kekshi.baselib.view.CrystalRangeSeekbar
 import com.kekshi.baselib.view.EvenItemDecoration
 import com.kekshi.baseproject.adapter.GridTestAdapter
 import com.kekshi.baseproject.adapter.TestAdapter
@@ -28,7 +30,33 @@ class TestViewActivity : BaseActivity() {
 
 //        testThread()
 //        testAnimator()
-        addView()
+//        addView()
+        testRangeSeekBar()
+    }
+
+    private fun testRangeSeekBar() {
+        // set properties
+        rangeSeekbar6
+            .setCornerRadius(10f)
+            .setBarColor(Color.parseColor("#33FD5056"))
+            .setBarHighlightColor(Color.parseColor("#FD5056"))
+            .setMinValue(0f)
+            .setMaxValue(2000f)
+            .setSteps(20f)
+            .setMinStartValue(100f)
+            .setMaxStartValue(2000f)
+            .setLeftThumbDrawable(R.drawable.icon_range)
+            .setLeftThumbHighlightDrawable(R.drawable.icon_range)
+            .setRightThumbDrawable(R.drawable.icon_range)
+            .setRightThumbHighlightDrawable(R.drawable.icon_range)
+            .setDataType(CrystalRangeSeekbar.DataType.INTEGER)
+            .apply()
+
+        // set listener
+        rangeSeekbar6.setOnRangeSeekbarChangeListener { minValue, maxValue ->
+            textMin6.setText(minValue.toString())
+            textMax6.setText(maxValue.toString())
+        }
     }
 
     private fun testAnimator() {

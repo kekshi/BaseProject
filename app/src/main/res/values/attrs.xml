@@ -69,4 +69,19 @@
         <!--是否最后一个显示完全,默认是true-->
         <attr name="isLastComplete" format="reference|boolean" />
     </declare-styleable>
+
+    <declare-styleable name="RoundView">
+        <!--背景圆环半径-->
+        <attr name="ring_radius" format="dimension"/>
+        <!--背景圆环宽度-->
+        <attr name="ring_width" format="dimension"/>
+        <!--背景圆环颜色-->
+        <attr name="ring_color" format="color"/>
+        <!--进度圆环宽度-->
+        <attr name="progress_ring_width" format="dimension"/>
+        <!--进度圆环开始颜色-->
+        <attr name="progress_ring_start_color" format="color"/>
+        <!--进度圆环结束颜色-->
+        <attr name="progress_ring_end_color" format="color"/>
+    </declare-styleable>
 </resources>

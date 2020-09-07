@@ -52,12 +52,14 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_tabs"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
 
     <com.kekshi.baseproject.widget.CollapsedTextView
         android:layout_width="match_parent"
@@ -93,9 +95,49 @@
         android:id="@+id/da_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:isLastComplete="false"
         android:layout_marginTop="20dp"
+        app:isLastComplete="false"
         app:maxCount="6"
         app:radius="25dp"
         app:space="0.5" />
+
+    <!-- seekbar option 6 -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:visibility="gone">
+
+        <com.kekshi.baselib.view.CrystalRangeSeekbar
+            android:id="@+id/rangeSeekbar6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/textMin6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rangeSeekbar6"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:text="0"
+            android:textColor="#000"
+            android:textSize="16dp" />
+
+        <TextView
+            android:id="@+id/textMax6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rangeSeekbar6"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="10dp"
+            android:text="0"
+            android:textColor="#000"
+            android:textSize="16dp" />
+    </RelativeLayout>
+
+    <com.kekshi.baseproject.widget.zdyview.RoundView
+        android:layout_width="300dp"
+        android:layout_height="300dp"/>
 </LinearLayout>
